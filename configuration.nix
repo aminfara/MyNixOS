@@ -87,11 +87,15 @@
       "networkmanager"
       "wheel"
     ];
+    shell = pkgs.fish;
     packages = with pkgs; [
       kdePackages.kate
       #  thunderbird
     ];
   };
+
+  # Install fish shell.
+  programs.fish.enable = true;
 
   # Install firefox.
   programs.firefox.enable = true;
