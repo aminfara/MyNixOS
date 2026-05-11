@@ -17,12 +17,14 @@
       home-manager,
       ...
     }:
-    {
-      nixosConfigurations = {
-        "nixos" = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
+    let
+      # ---- helper for creating NixOS configurations for different hosts ----
+      mkNixOS =
+        hostname: system:
+        nixpkgs.lib.nixosSystem {
+          inherit system;
           modules = [
-            ./configuration.nix
+            ./hosts/${hostname}/configuration.nix
             home-manager.nixosModules.home-manager
             {
               home-manager = {
@@ -32,8 +34,13 @@
                 backupFileExtension = "backup";
               };
             }
+
           ];
         };
+    in
+    {
+      nixosConfigurations = {
+        vbox = mkNixOS "vbox" "x86_64-linux";
       };
     };
 }
