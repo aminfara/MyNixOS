@@ -41,6 +41,7 @@
     {
       nixosConfigurations = {
         vbox = mkNixOS "vbox" "x86_64-linux";
+        vbuddy = mkNixOS "vbuddy" "aarch64-linux";
       };
     };
 }
