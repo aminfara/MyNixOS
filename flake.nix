@@ -7,17 +7,19 @@
 
   outputs =
     {
-      self,
       nixpkgs,
       ...
     }:
     let
+      settings = {
+        timezone = "Australia/Sydney";
+      };
       # ---- helper for creating NixOS configurations ----
       mkNixOS =
         hostname: system:
         nixpkgs.lib.nixosSystem {
           inherit system;
-          specialArgs = { inherit hostname system; };
+          specialArgs = { inherit hostname system settings; };
           modules = [
             ./hosts/${hostname}/default.nix
           ];

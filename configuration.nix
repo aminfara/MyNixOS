@@ -2,7 +2,11 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{
+  pkgs,
+  settings,
+  ...
+}:
 
 {
   # Bootloader.
@@ -17,7 +21,7 @@
   networking.networkmanager.enable = true;
 
   # Set your time zone.
-  time.timeZone = "Australia/Sydney";
+  time.timeZone = settings.timezone;
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_AU.UTF-8";
