@@ -38,8 +38,21 @@
     "root": {
       "inputs": {
         "home-manager": "home-manager",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "settings": "settings"
       }
+    },
+    "settings": {
+      "flake": false,
+      "locked": {
+        "path": "./settings-default",
+        "type": "path"
+      },
+      "original": {
+        "path": "./settings-default",
+        "type": "path"
+      },
+      "parent": []
     }
   },
   "root": "root",

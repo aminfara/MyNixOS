@@ -8,6 +8,12 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Per-machine configuration — created by bootstrap.sh
+    localConfig = {
+      url = "path:./config-override";
+      flake = false;
+    };
   };
 
   outputs =
@@ -15,33 +21,33 @@
       self,
       nixpkgs,
       home-manager,
+      localConfig,
       ...
     }:
     let
-      # ---- helper for creating NixOS configurations for different hosts ----
-      mkNixOS =
-        hostname: system:
-        nixpkgs.lib.nixosSystem {
-          inherit system;
-          modules = [
-            ./hosts/${hostname}/configuration.nix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                users.ali = import ./home.nix;
-                backupFileExtension = "backup";
-              };
-            }
-
-          ];
-        };
+      settings = import "${localConfig}/settings.nix";
     in
     {
-      nixosConfigurations = {
-        vbox = mkNixOS "vbox" "x86_64-linux";
-        vbuddy = mkNixOS "vbuddy" "aarch64-linux";
+      nixosConfigurations.local = nixpkgs.lib.nixosSystem {
+        system = builtins.trace ("System:" + toString settings.system) settings.system;
+        specialArgs = { inherit settings; };
+        modules = [
+          "${localConfig}/hardware-configuration.nix"
+          ./modules/common.nix
+          "${localConfig}/extras.nix"
+          home-manager.nixosModules.home-manager
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              extraSpecialArgs = { inherit settings; };
+              users = {
+                ${settings.username} = import ./modules/home.nix;
+              };
+              backupFileExtension = "backup";
+            };
+          }
+        ];
       };
     };
 }
