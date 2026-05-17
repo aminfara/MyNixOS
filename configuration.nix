@@ -21,7 +21,7 @@
   networking.networkmanager.enable = true;
 
   # Set your time zone.
-  time.timeZone = settings.timezone;
+  time.timeZone = settings.timeZone;
 
   # Select internationalisation properties.
   i18n.defaultLocale = settings.locale;
@@ -45,9 +45,9 @@
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.${settings.username} = {
+  users.users.${settings.userName} = {
     isNormalUser = true;
-    description = settings.fullname;
+    description = settings.fullName;
     extraGroups = [
       "networkmanager"
       "wheel"

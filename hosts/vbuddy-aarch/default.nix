@@ -1,4 +1,4 @@
-{ hostname, ... }:
+{ hostName, ... }:
 
 {
   imports = [
@@ -6,5 +6,5 @@
     ../../configuration.nix
   ];
 
-  networking.hostName = hostname; # Define your hostname.
+  networking.hostName = hostName; # Define your hostname.
 }
