@@ -24,30 +24,30 @@
   time.timeZone = settings.timezone;
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "en_AU.UTF-8";
+  i18n.defaultLocale = settings.locale;
 
   i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_AU.UTF-8";
-    LC_IDENTIFICATION = "en_AU.UTF-8";
-    LC_MEASUREMENT = "en_AU.UTF-8";
-    LC_MONETARY = "en_AU.UTF-8";
-    LC_NAME = "en_AU.UTF-8";
-    LC_NUMERIC = "en_AU.UTF-8";
-    LC_PAPER = "en_AU.UTF-8";
-    LC_TELEPHONE = "en_AU.UTF-8";
-    LC_TIME = "en_AU.UTF-8";
+    LC_ADDRESS = settings.locale;
+    LC_IDENTIFICATION = settings.locale;
+    LC_MEASUREMENT = settings.locale;
+    LC_MONETARY = settings.locale;
+    LC_NAME = settings.locale;
+    LC_NUMERIC = settings.locale;
+    LC_PAPER = settings.locale;
+    LC_TELEPHONE = settings.locale;
+    LC_TIME = settings.locale;
   };
 
   # Configure keymap in X11
   services.xserver.xkb = {
-    layout = "us";
-    variant = "mac";
+    layout = settings.kbdLayout;
+    variant = settings.kbdVariant;
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.ali = {
+  users.users.${settings.username} = {
     isNormalUser = true;
-    description = "Ali Aminfar";
+    description = settings.fullname;
     extraGroups = [
       "networkmanager"
       "wheel"

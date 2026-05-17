@@ -11,12 +11,17 @@
       ...
     }:
     let
-      settings = {
+      defaultSettings = {
         timezone = "Australia/Sydney";
+        username = "ali";
+        fullname = "Ali Aminfar";
+        locale = "en_AU.UTF-8";
+        kbdLayout = "us";
+        kbdVariant = "mac";
       };
       # ---- helper for creating NixOS configurations ----
       mkNixOS =
-        hostname: system:
+        hostname: system: settings:
         nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = { inherit hostname system settings; };
@@ -30,7 +35,10 @@
 
       # NixOS machines
       nixosConfigurations = {
-        vbuddy-aarch = mkNixOS "vbuddy-aarch" "aarch64-linux";
+        vbuddy-aarch = mkNixOS "vbuddy-aarch" "aarch64-linux" defaultSettings // {
+          # You can override settings for this machine here, e.g.:
+          # settings.timezone = "America/New_York";
+        };
       };
 
     };
