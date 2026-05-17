@@ -6,10 +6,7 @@
   };
 
   outputs =
-    {
-      nixpkgs,
-      ...
-    }:
+    { nixpkgs, ... }:
     let
       defaultSettings = {
         timeZone = "Australia/Sydney";
@@ -26,7 +23,7 @@
           inherit system;
           specialArgs = { inherit hostName system settings; };
           modules = [
-            ./hosts/${hostName}/default.nix
+            ./hosts/${hostName}
           ];
         };
 
