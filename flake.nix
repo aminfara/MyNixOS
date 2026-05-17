@@ -12,12 +12,12 @@
       ...
     }:
     let
-
       # ---- helper for creating NixOS configurations ----
       mkNixOS =
         hostname: system:
         nixpkgs.lib.nixosSystem {
           inherit system;
+          specialArgs = { inherit hostname system; };
           modules = [
             ./hosts/${hostname}/default.nix
           ];

@@ -6,6 +6,7 @@
   lib,
   pkgs,
   modulesPath,
+  system,
   ...
 }:
 
@@ -38,5 +39,5 @@
 
   swapDevices = [ ];
 
-  nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
+  nixpkgs.hostPlatform = lib.mkDefault system;
 }
