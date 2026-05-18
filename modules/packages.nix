@@ -7,6 +7,7 @@
   environment.systemPackages = with pkgs; [
     btop
     delta
+    neovim
     vim
     wget
   ];

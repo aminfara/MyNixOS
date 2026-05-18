@@ -14,6 +14,7 @@
       merge.conflictstyle = "zdiff3";
       rerere.enabled = true; # remember conflict resolutions
       core.pager = "delta";
+      core.editor = "nvim";
     };
 
     # Global gitignore
