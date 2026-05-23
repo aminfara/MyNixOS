@@ -50,6 +50,7 @@
           # You can override settings for this machine here, e.g.:
           # settings.timeZone = "America/New_York";
         };
+        qkvm-x86 = mkNixOS "qkvm-x86" "x86_64-linux" defaultSettings // {};
       };
 
     };
