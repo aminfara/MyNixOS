@@ -13,6 +13,9 @@ in
 {
   environment.systemPackages = [
     sddmTheme
+    pkgs.kdePackages.dolphin
+    pkgs.kitty
+    pkgs.hyprlauncher
   ];
 
   programs.hyprland = {
