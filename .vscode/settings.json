@@ -1,0 +1,29 @@
+{
+  "[nix]": {
+    "editor.defaultFormatter": "jnoortheen.nix-ide",
+    "editor.formatOnSave": true
+  },
+  "nix.enableLanguageServer": true,
+  "nix.serverPath": "nixd",
+  "nix.serverSettings": {
+    "nixd": {
+      "eval": {},
+      "formatting": {
+        "command": [ "nixfmt" ]
+      },
+      "nixpkgs": {
+        "expr": "(builtins.getFlake \"path:${workspaceFolder}\").nixosConfigurations.skypc.pkgs"
+      },
+      "options": {
+        "nixos": {
+          "expr": "(builtins.getFlake \"path:${workspaceFolder}\").nixosConfigurations.skypc.options"
+        }
+        // Uncomment once home-manager is added as a module to nixosConfigurations.skypc,
+        // to get hover/completion for home-manager options (home.packages, programs.*.enable, etc.):
+        // ,"home-manager": {
+        //   "expr": "(builtins.getFlake \"path:${workspaceFolder}\").nixosConfigurations.skypc.options.home-manager.users.type.getSubOptions []"
+        // }
+      }
+    }
+  }
+}
