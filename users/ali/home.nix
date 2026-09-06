@@ -2,8 +2,4 @@
 { ... }:
 {
   home.username = "ali";
-
-  programs.bash.shellAliases = {
-    glg = "git log";
-  };
 }
