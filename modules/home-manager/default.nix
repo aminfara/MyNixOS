@@ -4,7 +4,10 @@
   home.stateVersion = "26.05";
   home.homeDirectory = lib.mkDefault "/home/${config.home.username}";
 
-  programs.bash.shellAliases = {
-    gst = "git status";
+  programs.bash = {
+    enable = true;
+    shellAliases = {
+      gst = "git status";
+    };
   };
 }
