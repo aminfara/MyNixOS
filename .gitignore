@@ -7,3 +7,7 @@ result-*
 
 # Ignore NixOS interactive test driver history
 **/.nixos-test-history
+
+# Host hardware configs are generated per-machine at setup time
+# (nixos-generate-config), not committed.
+hosts/*/hardware-configuration.nix
