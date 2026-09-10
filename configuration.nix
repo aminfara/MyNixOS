@@ -52,12 +52,9 @@
     isNormalUser = true;
     description = "Ali Aminfar";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-      git
-      nixfmt
-      nixd
-    ];
   };
+
+  services.vscode-server.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;

@@ -1,0 +1,29 @@
+{
+  "[nix]": {
+    "editor.defaultFormatter": "jnoortheen.nix-ide",
+    "editor.formatOnSave": true
+  },
+  "nix.enableLanguageServer": true,
+  "nix.serverPath": "nixd",
+  "nix.serverSettings": {
+    "nixd": {
+      "eval": {},
+      "formatting": {
+        "command": [
+          "nixfmt"
+        ]
+      },
+      "nixpkgs": {
+        "expr": "(builtins.getFlake \"path:${workspaceFolder}\").nixosConfigurations.nixosvm.pkgs"
+      },
+      "options": {
+        "nixos": {
+          "expr": "(builtins.getFlake \"path:${workspaceFolder}\").nixosConfigurations.nixosvm.options"
+        },
+        "home-manager": {
+          "expr": "(builtins.getFlake \"path:${workspaceFolder}\").nixosConfigurations.nixosvm.options.home-manager.users.type.getSubOptions []"
+        }
+      }
+    }
+  }
+}
