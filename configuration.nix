@@ -52,12 +52,26 @@
     isNormalUser = true;
     description = "Ali Aminfar";
     extraGroups = [ "networkmanager" "wheel" ];
-    shell = pkgs.fish;
+    # Login shell stays bash (POSIX) rather than fish: tools that run a
+    # non-interactive SSH command against this account -- VS Code
+    # Remote-SSH's server bootstrap, scp, git, ansible -- pipe bash/sh
+    # syntax into the login shell's stdin. Fish can't parse that and just
+    # hangs with no output until the caller times out (this is what broke
+    # Remote-SSH after fish was set as the login shell). Interactive
+    # sessions still land in fish via the exec below.
   };
 
-  # Required alongside users.users.ali.shell so fish is registered in
-  # /etc/shells (and available system-wide, not just in ali's home-manager profile).
+  # Required so fish is registered in /etc/shells and available system-wide
+  # (not just in ali's home-manager profile).
   programs.fish.enable = true;
+
+  # Auto-exec into fish for interactive shells only, leaving non-interactive
+  # bash sessions (see note above) untouched.
+  programs.bash.interactiveShellInit = ''
+    if [[ $- == *i* ]] && [[ -z "$FISH_VERSION" ]] && [[ -z "$BASH_EXECUTION_STRING" ]]; then
+      exec ${pkgs.fish}/bin/fish
+    fi
+  '';
 
   services.vscode-server.enable = true;
 
@@ -84,6 +98,17 @@
     wayland.enable = true;
   };
   services.displayManager.defaultSession = "hyprland-uwsm";
+
+  # SDDM theme from https://github.com/Darkkal44/qylock
+  # Disabled: the "sword" theme's greeter animation pegs 3+ CPU cores
+  # continuously whenever the login screen is left unattended (this VM is
+  # normally only accessed via SSH/VS Code Remote, never at the console),
+  # which starved the vscode-server setup and caused Remote-SSH timeouts.
+  # programs.qylock = {
+  #   enable = true;
+  #   theme = "sword";
+  #   quickshell.enable = false; # only the SDDM greeter theme, not the Quickshell lockscreen
+  # };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;

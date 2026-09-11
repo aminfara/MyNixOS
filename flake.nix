@@ -16,15 +16,21 @@
       url = "github:sadjow/claude-code-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    qylock = {
+      url = "github:Darkkal44/qylock";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, vscode-server, claude-code, ... }: {
+  outputs = { self, nixpkgs, home-manager, vscode-server, claude-code, qylock, ... }: {
     nixosConfigurations.nixosvm = nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       modules = [
         ./hardware-configuration.nix
         ./configuration.nix
         vscode-server.nixosModules.default
+        # qylock.nixosModules.default # disabled: greeter animation pegs CPU when unattended
         home-manager.nixosModules.home-manager
         {
           nixpkgs.overlays = [ claude-code.overlays.default ];
