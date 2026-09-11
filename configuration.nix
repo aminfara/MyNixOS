@@ -52,9 +52,20 @@
     isNormalUser = true;
     description = "Ali Aminfar";
     extraGroups = [ "networkmanager" "wheel" ];
+    shell = pkgs.fish;
   };
 
+  # Required alongside users.users.ali.shell so fish is registered in
+  # /etc/shells (and available system-wide, not just in ali's home-manager profile).
+  programs.fish.enable = true;
+
   services.vscode-server.enable = true;
+
+  # Lets unpatched, dynamically-linked generic-Linux binaries run on NixOS:
+  # VSCode extensions that download their own language-server binaries, and
+  # mise-installed toolchains (precompiled node/python builds expect a
+  # standard FHS dynamic linker path). See https://nix.dev/permalink/stub-ld
+  programs.nix-ld.enable = true;
 
   # Hyprland, launched via UWSM (systemd-integrated session management).
   programs.hyprland = {
