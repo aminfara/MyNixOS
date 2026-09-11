@@ -56,6 +56,24 @@
 
   services.vscode-server.enable = true;
 
+  # Hyprland, launched via UWSM (systemd-integrated session management).
+  programs.hyprland = {
+    enable = true;
+    withUWSM = true;
+    xwayland.enable = true;
+  };
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
+  };
+
+  services.displayManager.sddm = {
+    enable = true;
+    wayland.enable = true;
+  };
+  services.displayManager.defaultSession = "hyprland-uwsm";
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 

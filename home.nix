@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   home.username = "ali";
@@ -10,7 +10,13 @@
     nixfmt
     nixd
     claude-code
+    ghostty
   ];
+
+  # Symlinked out of the store (not copied) so editing the file in the repo
+  # takes effect immediately -- no rebuild/switch needed to pick up changes.
+  xdg.configFile."hypr/hyprland.lua".source =
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Workplace/MyNIXOS/hypr/hyprland.lua";
 
   programs.home-manager.enable = true;
 }
