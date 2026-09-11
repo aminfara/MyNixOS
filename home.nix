@@ -11,6 +11,8 @@
     nixd
     claude-code
     ghostty
+    stylua
+    lua-language-server
   ];
 
   # Symlinked out of the store (not copied) so editing the file in the repo

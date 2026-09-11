@@ -3,6 +3,11 @@
     "editor.defaultFormatter": "jnoortheen.nix-ide",
     "editor.formatOnSave": true
   },
+  "[lua]": {
+    "editor.defaultFormatter": "sumneko.lua"
+  },
+  "editor.formatOnSave": true,
+  "Lua.misc.executablePath": "/etc/profiles/per-user/ali/bin/lua-language-server",
   "nix.enableLanguageServer": true,
   "nix.serverPath": "nixd",
   "nix.serverSettings": {
