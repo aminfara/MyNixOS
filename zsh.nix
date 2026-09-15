@@ -28,9 +28,13 @@
       plugins = [
         # zimfw/completion must load before fzf-tab (which needs compinit
         # to have already run) and before any plugin that wraps completion
-        # widgets, e.g. fast-syntax-highlighting.
+        # widgets, e.g. fast-syntax-highlighting. zsh-autosuggestions must
+        # load before fast-syntax-highlighting so suggestions get
+        # highlighted correctly, and fast-syntax-highlighting must stay
+        # last since it wraps zle widgets from everything before it.
         "zimfw/completion"
         "Aloxaf/fzf-tab"
+        "zsh-users/zsh-autosuggestions"
         "zdharma-continuum/fast-syntax-highlighting"
       ];
     };

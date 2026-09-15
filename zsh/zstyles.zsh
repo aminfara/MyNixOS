@@ -25,3 +25,7 @@ zstyle ':fzf-tab:*' switch-group '<' '>'
 zstyle ':fzf-tab:*' fzf-flags '--bind=space:accept+print(\ ),tab:accept+print(\ )'
 
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always --icons $realpath'
+
+# zsh-autosuggestions: try history first, then fall back to what
+# tab-completion would suggest.
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
