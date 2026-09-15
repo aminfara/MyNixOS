@@ -38,6 +38,10 @@
         # git-checkout completions are already sorted usefully; don't re-sort.
         zstyle ':completion:*:git-checkout:*' sort false
         zstyle ':fzf-tab:*' switch-group '<' '>'
+        # Space accepts the highlighted completion and inserts a trailing
+        # space, so you can keep completing the next argument without
+        # pressing Tab again.
+        zstyle ':fzf-tab:*' fzf-flags '--bind=space:accept+print(\ )'
         zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always --icons $realpath'
       '')
     ];
