@@ -5,9 +5,12 @@
 { config, pkgs, ... }:
 
 {
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
-  imports = [];
+  imports = [ ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -51,7 +54,10 @@
   users.users."ali" = {
     isNormalUser = true;
     description = "Ali Aminfar";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
     # Login shell stays bash (POSIX) rather than fish: tools that run a
     # non-interactive SSH command against this account -- VS Code
     # Remote-SSH's server bootstrap, scp, git, ansible -- pipe bash/sh
@@ -59,19 +65,22 @@
     # hangs with no output until the caller times out (this is what broke
     # Remote-SSH after fish was set as the login shell). Interactive
     # sessions still land in fish via the exec below.
+    shell = pkgs.zsh;
   };
 
   # Required so fish is registered in /etc/shells and available system-wide
   # (not just in ali's home-manager profile).
   programs.fish.enable = true;
 
-  # Auto-exec into fish for interactive shells only, leaving non-interactive
-  # bash sessions (see note above) untouched.
-  programs.bash.interactiveShellInit = ''
-    if [[ $- == *i* ]] && [[ -z "$FISH_VERSION" ]] && [[ -z "$BASH_EXECUTION_STRING" ]]; then
-      exec ${pkgs.fish}/bin/fish
-    fi
-  '';
+  programs.zsh.enable = true;
+
+  # # Auto-exec into fish for interactive shells only, leaving non-interactive
+  # # bash sessions (see note above) untouched.
+  # programs.bash.interactiveShellInit = ''
+  #   if [[ $- == *i* ]] && [[ -z "$FISH_VERSION" ]] && [[ -z "$BASH_EXECUTION_STRING" ]]; then
+  #     exec ${pkgs.fish}/bin/fish
+  #   fi
+  # '';
 
   services.vscode-server.enable = true;
 
@@ -112,6 +121,13 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
+  # NixOS's per-user profile only symlinks a fixed allowlist of share/*
+  # subdirectories in from installed packages -- share/zsh isn't on it by
+  # default, so completion functions shipped by packages (eza's _eza,
+  # zoxide's _zoxide, starship's, mise's, bat's, fd's, ripgrep's, ...) never
+  # reached zsh's fpath.
+  environment.pathsToLink = [ "/share/zsh" ];
 
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).

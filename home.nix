@@ -1,6 +1,8 @@
 { config, pkgs, ... }:
 
 {
+  imports = [ ./zsh.nix ];
+
   home.username = "ali";
   home.homeDirectory = "/home/ali";
   home.stateVersion = "26.05";
@@ -193,7 +195,7 @@
   };
 
   programs.starship = {
-    enable = true;
+    enable = false;
     enableFishIntegration = true;
   };
 
