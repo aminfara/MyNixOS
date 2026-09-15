@@ -73,6 +73,10 @@
   programs.fish.enable = true;
 
   programs.zsh.enable = true;
+  # home-manager's zsh.nix owns completion via zimfw/completion (antidote).
+  # Leaving this on double-calls compinit: /etc/zshrc runs first and
+  # populates $_comps before zimfw/completion gets a chance to.
+  programs.zsh.enableCompletion = false;
 
   # # Auto-exec into fish for interactive shells only, leaving non-interactive
   # # bash sessions (see note above) untouched.
