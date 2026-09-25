@@ -66,7 +66,7 @@
   # great history ✅
   # history substring search ✅
   # fast syntax highlighting ✅
-  # auto suggestions
+  # auto suggestions ✅
   # completion
   programs.zsh = {
     enable = true;
@@ -83,21 +83,30 @@
       ignoreAllDups = true;
     };
 
-    # Plugin order matters
+    # Plugin order matters: autosuggestions first, then the syntax highlighter,
+    # then hss last (hss must load after the highlighter).
     antidote = {
       enable = true;
       plugins = [
+        "zsh-users/zsh-autosuggestions"
         "zdharma-continuum/fast-syntax-highlighting"
         "zsh-users/zsh-history-substring-search"
       ];
     };
 
-    # antidote only loads hss; the key bindings are ours (order 1250 = where
-    # home-manager's historySubstringSearch used to put them, after antidote at 550).
-    initContent = lib.mkOrder 1250 ''
-      bindkey "$terminfo[kcuu1]" history-substring-search-up   # Up arrow
-      bindkey "$terminfo[kcud1]" history-substring-search-down # Down arrow
-    '';
+    initContent = lib.mkMerge [
+      # Before antidote (550) so the plugin picks it up when it loads
+      (lib.mkOrder 500 ''
+        ZSH_AUTOSUGGEST_STRATEGY=(history completion) # history first, completion as fallback
+      '')
+
+      # antidote only loads hss; the key bindings are ours (order 1250 = where
+      # home-manager's historySubstringSearch used to put them, after antidote at 550).
+      (lib.mkOrder 1250 ''
+        bindkey "$terminfo[kcuu1]" history-substring-search-up   # Up arrow
+        bindkey "$terminfo[kcud1]" history-substring-search-down # Down arrow
+      '')
+    ];
   };
 
   programs.bat.enable = true;
