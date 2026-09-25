@@ -55,13 +55,25 @@
   };
 
   # TODO: Add following
-  # great history
+  # great history ✅
   # history substring search
   # syntax highlighting
   # auto suggestions
   # completion
   programs.zsh = {
     enable = true;
+    dotDir = "${config.xdg.configHome}/zsh";
+
+    autocd = true;
+
+    history = {
+      path = "${config.xdg.dataHome}/zsh/history";
+      size = 50000;
+      save = 50000;
+      share = true;
+      append = true;
+      ignoreAllDups = true;
+    };
   };
 
   programs.bat.enable = true;
