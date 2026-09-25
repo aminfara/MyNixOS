@@ -20,7 +20,6 @@
       # CLI Tools
       # TODO: Check if there is options way for each
       btop
-      eza
       fd
       fzf
       delta
@@ -48,8 +47,19 @@
       "$HOME/bin"
     ];
 
+    shellAliases = {
+      l = "eza --long --icons --all --all"; # Other eza aliases are defined by home-manager's eza module.
+    };
+
+    shell.enableZshIntegration = true;
   };
 
+  # TODO: Add following
+  # great history
+  # history substring search
+  # syntax highlighting
+  # auto suggestions
+  # completion
   programs.zsh = {
     enable = true;
   };
@@ -59,8 +69,12 @@
   programs.starship.enable = true;
   programs.starship.enableZshIntegration = true;
 
+  programs.eza.enable = true;
+  programs.eza.extraOptions = [ "--group-directories-first" ];
+
   programs.zoxide.enable = true;
-  programs.zoxide.enableZshIntegration = true; # `zoxide init fish`; cd/cdi aliases above wire it in.
+  programs.zoxide.enableZshIntegration = true;
+  programs.zoxide.options = [ "--cmd cd" ];
 
   programs.mise.enable = true;
   programs.mise.enableZshIntegration = true;
