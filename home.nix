@@ -43,9 +43,6 @@
       BAT_PAGER = "less";
       MANPAGER = "sh -c 'col -bx | bat --style=plain --language=man'";
       PAGER = "bat --paging=always --style=plain";
-
-      HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND = "bg=blue,fg=black,bold";
-      HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND = "fg=red,bold";
     };
 
     sessionPath = [
@@ -87,6 +84,7 @@
     # then hss last (hss must load after the highlighter).
     antidote = {
       enable = true;
+
       plugins = [
         "zsh-users/zsh-autosuggestions"
         "zdharma-continuum/fast-syntax-highlighting"
@@ -97,15 +95,15 @@
     initContent = lib.mkMerge [
       # Before antidote (550) so the plugin picks it up when it loads
       (lib.mkOrder 500 ''
+        HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND="bg=blue,fg=black,bold";
+        HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND="fg=red,bold";
         ZSH_AUTOSUGGEST_STRATEGY=(history completion) # history first, completion as fallback
       '')
 
-      # antidote only loads hss; the key bindings are ours (order 1250 = where
-      # home-manager's historySubstringSearch used to put them, after antidote at 550).
-      (lib.mkOrder 1250 ''
+      ''
         bindkey "$terminfo[kcuu1]" history-substring-search-up   # Up arrow
         bindkey "$terminfo[kcud1]" history-substring-search-down # Down arrow
-      '')
+      ''
     ];
   };
 

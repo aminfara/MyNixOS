@@ -70,6 +70,12 @@
 
   programs.zsh.enable = true;
 
+  # Home-manager's .zshrc already runs compinit. NixOS's /etc/zshrc runs a
+  # second one first, against the same ~/.config/zsh/.zcompdump but with a
+  # different fpath (antidote adds dirs later), so the two disagree on the
+  # file count and each rebuilds the dump on every shell start (~0.9s).
+  programs.zsh.enableCompletion = false;
+
   # NixOS's per-user profile only symlinks a fixed allowlist of share/*
   # subdirectories in from installed packages -- share/zsh isn't on it by
   # default, so completion functions shipped by packages (eza's _eza,
