@@ -56,7 +56,7 @@
 
   # TODO: Add following
   # great history ✅
-  # history substring search
+  # history substring search ✅
   # syntax highlighting
   # auto suggestions
   # completion
@@ -73,6 +73,12 @@
       share = true;
       append = true;
       ignoreAllDups = true;
+    };
+
+    historySubstringSearch = {
+      enable = true;
+      searchUpKey = "$terminfo[kcuu1]"; # Up arrow
+      searchDownKey = "$terminfo[kcud1]"; # Down arrow
     };
   };
 
