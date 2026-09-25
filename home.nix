@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   programs.home-manager.enable = true;
@@ -38,6 +43,9 @@
       BAT_PAGER = "less";
       MANPAGER = "sh -c 'col -bx | bat --style=plain --language=man'";
       PAGER = "bat --paging=always --style=plain";
+
+      HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND = "bg=blue,fg=black,bold";
+      HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND = "fg=red,bold";
     };
 
     sessionPath = [
@@ -57,7 +65,7 @@
   # TODO: Add following
   # great history ✅
   # history substring search ✅
-  # syntax highlighting
+  # fast syntax highlighting ✅
   # auto suggestions
   # completion
   programs.zsh = {
@@ -75,11 +83,21 @@
       ignoreAllDups = true;
     };
 
-    historySubstringSearch = {
+    # Plugin order matters
+    antidote = {
       enable = true;
-      searchUpKey = "$terminfo[kcuu1]"; # Up arrow
-      searchDownKey = "$terminfo[kcud1]"; # Down arrow
+      plugins = [
+        "zdharma-continuum/fast-syntax-highlighting"
+        "zsh-users/zsh-history-substring-search"
+      ];
     };
+
+    # antidote only loads hss; the key bindings are ours (order 1250 = where
+    # home-manager's historySubstringSearch used to put them, after antidote at 550).
+    initContent = lib.mkOrder 1250 ''
+      bindkey "$terminfo[kcuu1]" history-substring-search-up   # Up arrow
+      bindkey "$terminfo[kcud1]" history-substring-search-down # Down arrow
+    '';
   };
 
   programs.bat.enable = true;
