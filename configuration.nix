@@ -68,23 +68,14 @@
     shell = pkgs.zsh;
   };
 
-  # Required so fish is registered in /etc/shells and available system-wide
-  # (not just in ali's home-manager profile).
-  programs.fish.enable = true;
-
   programs.zsh.enable = true;
-  # home-manager's zsh.nix owns completion via zimfw/completion (antidote).
-  # Leaving this on double-calls compinit: /etc/zshrc runs first and
-  # populates $_comps before zimfw/completion gets a chance to.
-  programs.zsh.enableCompletion = false;
 
-  # # Auto-exec into fish for interactive shells only, leaving non-interactive
-  # # bash sessions (see note above) untouched.
-  # programs.bash.interactiveShellInit = ''
-  #   if [[ $- == *i* ]] && [[ -z "$FISH_VERSION" ]] && [[ -z "$BASH_EXECUTION_STRING" ]]; then
-  #     exec ${pkgs.fish}/bin/fish
-  #   fi
-  # '';
+  # NixOS's per-user profile only symlinks a fixed allowlist of share/*
+  # subdirectories in from installed packages -- share/zsh isn't on it by
+  # default, so completion functions shipped by packages (eza's _eza,
+  # zoxide's _zoxide, starship's, mise's, bat's, fd's, ripgrep's, ...) never
+  # reached zsh's fpath.
+  environment.pathsToLink = [ "/share/zsh" ];
 
   services.vscode-server.enable = true;
 
@@ -125,13 +116,6 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-
-  # NixOS's per-user profile only symlinks a fixed allowlist of share/*
-  # subdirectories in from installed packages -- share/zsh isn't on it by
-  # default, so completion functions shipped by packages (eza's _eza,
-  # zoxide's _zoxide, starship's, mise's, bat's, fd's, ripgrep's, ...) never
-  # reached zsh's fpath.
-  environment.pathsToLink = [ "/share/zsh" ];
 
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
