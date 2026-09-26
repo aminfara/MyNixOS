@@ -26,7 +26,6 @@
       # TODO: Check if there is options way for each
       btop
       fd
-      fzf
       delta
       lazygit
       neovim
@@ -112,6 +111,9 @@
       (builtins.readFile ./zsh/post-plugin.zsh)
     ];
   };
+
+  programs.fzf.enable = true;
+  programs.fzf.enableZshIntegration = true;
 
   programs.bat.enable = true;
 
