@@ -64,12 +64,18 @@
   # history substring search ✅
   # fast syntax highlighting ✅
   # auto suggestions ✅
-  # completion
+  # completion ✅
   programs.zsh = {
     enable = true;
     dotDir = "${config.xdg.configHome}/zsh";
 
     autocd = true;
+
+    # compinit is run by zephyr's completion plugin inside the antidote list
+    # (fzf-tab must load after compinit), so drop home-manager's own call, which
+    # would otherwise run after all plugins. enableCompletion stays on for
+    # nix-zsh-completions and the fpath setup.
+    completionInit = "";
 
     history = {
       path = "${config.xdg.dataHome}/zsh/history";
@@ -80,12 +86,20 @@
       ignoreAllDups = true;
     };
 
-    # Plugin order matters: autosuggestions first, then the syntax highlighter,
-    # then hss last (hss must load after the highlighter).
+    # Plugin order matters:
+    # - completion definitions must be on fpath before compinit
+    # - zephyr runs compinit, then fzf-tab, then fzf-tab-source (its
+    #   descriptions format must override zephyr's compstyle)
+    # - fzf-tab before the widget wrappers: autosuggestions, then the syntax
+    #   highlighter, then hss last (hss must load after the highlighter).
     antidote = {
       enable = true;
 
       plugins = [
+        "zsh-users/zsh-completions kind:fpath path:src"
+        "mattmc3/zephyr path:plugins/completion"
+        "Aloxaf/fzf-tab"
+        "Freed-Wu/fzf-tab-source"
         "zsh-users/zsh-autosuggestions"
         "zdharma-continuum/fast-syntax-highlighting"
         "zsh-users/zsh-history-substring-search"
@@ -93,17 +107,9 @@
     };
 
     initContent = lib.mkMerge [
-      # Before antidote (550) so the plugin picks it up when it loads
-      (lib.mkOrder 500 ''
-        HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND="bg=blue,fg=black,bold";
-        HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND="fg=red,bold";
-        ZSH_AUTOSUGGEST_STRATEGY=(history completion) # history first, completion as fallback
-      '')
-
-      ''
-        bindkey "$terminfo[kcuu1]" history-substring-search-up   # Up arrow
-        bindkey "$terminfo[kcud1]" history-substring-search-down # Down arrow
-      ''
+      # Before antidote (550) so the plugins pick these up when they load
+      (lib.mkOrder 500 (builtins.readFile ./zsh/pre-plugin.zsh))
+      (builtins.readFile ./zsh/post-plugin.zsh)
     ];
   };
 
