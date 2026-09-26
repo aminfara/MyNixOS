@@ -125,10 +125,13 @@
 
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
-  # environment.systemPackages = with pkgs; [
-  #   vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #   wget
-  # ];
+  environment.systemPackages = with pkgs; [
+    # wl-copy/wl-paste for the OMZ clipboard plugin's clipcopy/clippaste
+    # (used by git's gbcopy, and the copypath/copybuffer zsh plugins). Only
+    # takes effect when $WAYLAND_DISPLAY is set, i.e. a native Hyprland
+    # session -- not over a plain SSH/VS Code Remote-SSH connection.
+    wl-clipboard
+  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

@@ -31,6 +31,12 @@
       neovim
       ripgrep
       yazi
+
+      # Required by the OMZ `extract` plugin for the archive types it
+      # doesn't already cover via tar/gzip/bzip2/xz/zstd/cpio (all in the
+      # base system closure already).
+      unzip # .zip/.jar/.war/.apk/...
+      p7zip # .7z, provides `7za`
     ];
 
     sessionVariables = {
@@ -86,9 +92,15 @@
     };
 
     # Plugin order matters:
-    # - completion definitions must be on fpath before compinit
+    # - completion definitions must be on fpath before compinit. extract's
+    #   `_extract` uses the passive `#compdef` header form, only picked up by
+    #   compinit's own fpath scan, so its dir needs a kind:fpath entry here
+    #   too (git/sudo call `compdef` live instead, which works from anywhere
+    #   after compinit has run).
     # - zephyr runs compinit, then fzf-tab, then fzf-tab-source (its
     #   descriptions format must override zephyr's compstyle)
+    # - the OMZ plugins define widgets (sudo, copybuffer) that need to exist
+    #   before the wrappers below load
     # - fzf-tab before the widget wrappers: autosuggestions, then the syntax
     #   highlighter, then hss last (hss must load after the highlighter).
     antidote = {
@@ -96,11 +108,18 @@
 
       plugins = [
         "zsh-users/zsh-completions kind:fpath path:src"
+        "ohmyzsh/ohmyzsh kind:fpath path:plugins/extract"
         "mattmc3/zephyr path:plugins/completion"
         "mattmc3/zephyr path:plugins/editor"
         "mattmc3/zephyr path:plugins/directory"
         "${pkgs.zsh-fzf-tab}/share/fzf-tab"
         "Freed-Wu/fzf-tab-source"
+        "ohmyzsh/ohmyzsh path:lib/clipboard.zsh" # clipcopy/clippaste, used by git's gbcopy and copypath/copybuffer below
+        "ohmyzsh/ohmyzsh path:plugins/git"
+        "ohmyzsh/ohmyzsh path:plugins/sudo"
+        "ohmyzsh/ohmyzsh path:plugins/extract"
+        "ohmyzsh/ohmyzsh path:plugins/copypath"
+        "ohmyzsh/ohmyzsh path:plugins/copybuffer"
         "zsh-users/zsh-autosuggestions"
         "zdharma-continuum/fast-syntax-highlighting"
         "zsh-users/zsh-history-substring-search"
