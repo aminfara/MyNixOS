@@ -98,7 +98,7 @@
       plugins = [
         "zsh-users/zsh-completions kind:fpath path:src"
         "mattmc3/zephyr path:plugins/completion"
-        "Aloxaf/fzf-tab"
+        "${pkgs.zsh-fzf-tab}/share/fzf-tab"
         "Freed-Wu/fzf-tab-source"
         "zsh-users/zsh-autosuggestions"
         "zdharma-continuum/fast-syntax-highlighting"
