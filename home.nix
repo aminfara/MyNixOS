@@ -14,7 +14,6 @@
     stateVersion = "26.05";
 
     packages = with pkgs; [
-      git
       nixfmt
       nixd
       claude-code
@@ -24,13 +23,11 @@
 
       # CLI Tools
       # TODO: Check if there is options way for each
-      btop
+      # git, delta, lazygit, btop, yazi moved to their own programs.* below,
+      # for the shell/git integration those options give.
       fd
-      delta
-      lazygit
       neovim
       ripgrep
-      yazi
 
       # Required by the OMZ `extract` plugin for the archive types it
       # doesn't already cover via tar/gzip/bzip2/xz/zstd/cpio (all in the
@@ -171,6 +168,38 @@
       node.compile = false;
     };
   };
+
+  # Writes ~/.config/git/config (XDG path, not ~/.gitconfig). Git reads both
+  # if both exist -- XDG one first, then ~/.gitconfig -- so the pre-existing
+  # ~/.gitconfig (same userName/userEmail) keeps working and isn't touched;
+  # it's redundant now and can be removed whenever convenient.
+  programs.git = {
+    enable = true;
+    settings.user = {
+      name = "Ali 🚶";
+      email = "ali.aminfar@gmail.com";
+    };
+  };
+
+  # Wires delta in as git's pager for diff/blame/log/show and as the
+  # interactive-staging diff filter (programs.git.iniContent).
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+  };
+
+  # enableZshIntegration wraps lazygit in a shell function (default: `lg`)
+  # that cds the shell to wherever lazygit's "exit to dir" left you.
+  programs.lazygit.enable = true;
+  programs.lazygit.enableZshIntegration = true;
+
+  # enableZshIntegration wraps yazi in a shell function (default: `y`) that
+  # cds the shell into wherever you navigated to when you quit yazi.
+  programs.yazi.enable = true;
+  programs.yazi.enableZshIntegration = true;
+
+  # Settings/themes left at defaults; configure later.
+  programs.btop.enable = true;
 
   # Extra config files
 
