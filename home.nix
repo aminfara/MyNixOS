@@ -118,6 +118,13 @@
   programs.starship.enable = true;
   programs.starship.enableZshIntegration = true;
 
+  # Generates LS_COLORS at build time, shared by zsh completion, fzf-tab and eza.
+  programs.vivid = {
+    enable = true;
+    enableZshIntegration = true;
+    activeTheme = "ayu";
+  };
+
   programs.eza.enable = true;
   programs.eza.extraOptions = [ "--group-directories-first" ];
 
